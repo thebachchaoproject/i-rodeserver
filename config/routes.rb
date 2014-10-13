@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
   namespace :api do
-    resources :vehicles, only: [:index, :show, :update, :create, :destroy]
+    get '/vehicles/:vehicle_no', to: 'vehicles#show'
+    resources :vehicles, only: [:index, :update, :create, :destroy]
+
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
