@@ -28,7 +28,7 @@ def addInformation(request):
 			# Replace vehicle number to upper case and remove spaces for uniformity in database
 			vehicle_number = vehicle_number.upper()
 			vehicle_number = vehicle_number.replace(" ", "")
-			
+		
 			# Check if vehicle number is missing. If yes, print error message.
 			if vehicle_number == "":
 				response_message = {}
@@ -39,25 +39,28 @@ def addInformation(request):
 			try:	
 				vehicle_present_in_db = vehicleInfo.objects.get(vehicleNumber=vehicle_number)			
 				vehicle_id_in_db = vehicle_present_in_db.id
-		
+	
 			except:
 				vehicle_id_in_db = None
 
 			# If vehicle is already present in DB, add only trip information and review to the DB.
-		
+	
 			if vehicle_id_in_db:
 				trip_info = tripInfo(date = request.POST['date'],
 								time = request.POST['time'],
-								location = request.POST['location'],
+								location_from = request.POST['from'],
+								location_to = request.POST['to'],
 								driverName = request.POST['drivername'],
 								photoLink = request.POST['photolink'],
 								vehicle = vehicleInfo.objects.get(id = vehicle_id_in_db))
-
 				trip_info.save()
+			
 				review_info = reviews( review = request.POST['review'],
 								rating = request.POST['rating'],
-								sourceInfo = vehicleInfo.objects.get(id = vehicle_id_in_db))
+								sourceInfo = vehicleInfo.objects.get(id = vehicle_id_in_db),
+								trip = tripInfo.objects.get(id = trip_info.id))
 				review_info.save()
+			
 				response_message = {}
 				response_message['message'] = 'Success'
 				return HttpResponse(json.dumps(response_message))
@@ -68,19 +71,21 @@ def addInformation(request):
 								transportMode = request.POST['transportmode'],)
 
 				vehicle_info.save()
-				
+			
 				trip_info = tripInfo(date = request.POST['date'],
 								time = request.POST['time'],
-								location = request.POST['location'],
+								location_from = request.POST['from'],
+								location_to = request.POST['to'],
 								driverName = request.POST['drivername'],
 								photoLink = request.POST['photolink'],
 								vehicle = vehicleInfo.objects.get(id = vehicle_info.id))
-				
+			
 				trip_info.save()
-
+			
 				review_info = reviews(rating = request.POST['rating'],
 								review = request.POST['review'],
-								sourceInfo = vehicleInfo.objects.get(id = vehicle_info.id))
+								sourceInfo = vehicleInfo.objects.get(id = vehicle_info.id),
+								trip = tripInfo.objects.get(id = trip_info.id))
 				review_info.save()
 
 				response_message = {}
