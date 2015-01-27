@@ -1,0 +1,94 @@
+<!DOCTYPE htmlL>
+
+<hmtl>
+	<head>
+		<meta charset="utf-8">
+		<title>I-Rode | Trip Information</title>
+		<style>
+			table {
+    			width:80%;
+			}
+			table, th, td {
+    			border: 1px solid black;
+    			border-collapse: collapse;
+			}
+			th{
+    			padding: 10px;
+    			text-align: center;
+			} 
+			td {
+    			padding: 5px;
+    			text-align: center;
+			}
+			table#t01 tr:nth-child(even) {
+			    background-color: #eee;
+			}
+			table#t01 tr:nth-child(odd) {
+   				background-color:#fff;
+			}
+			table#t01 th	{
+    			background-color: gray;
+   				color: white;
+			}
+			#datetime{
+				padding-left: 135px;
+			}
+			#heading{
+				padding-left: 135px;
+			} 
+		</style>
+	</head>
+
+	<body>
+		<center><h1><b>I-Rode<b></h1>
+		<h3><i>Travel Safe, Always!</i></h3></center>
+		</br>
+		<p>
+			<div id="heading"><h2><b><u>Trip Information:</u><b></h2></div>
+			<div id="datetime">
+				<h4>Date: {{information_dict.date|date:"D d M Y"}}</h4>
+				<h4>Time: {{information_dict.time|time:"H:i"}}</h4>
+			</div>
+			<center><table id="t01"
+				<tr>
+					<th>Fields</td>
+					<th>Information</th>
+				</tr>
+				<tr>
+					<td>Vehicle Number</td>
+					<td>{{information_dict.vehicleNumber}}</td>
+				</tr>
+				<tr>
+					<td>Transportation Mode</td>
+					<td>{{information_dict.transportMode}}</td>
+				</tr>
+				<tr>
+					<td>Driver Name</td>
+					<td>{{information_dict.driverName}}</td>
+				</tr>
+				<tr>
+					<td>Start Trip - Location</td>
+					<td>{{information_dict.from}}</td>
+				</tr>
+				<tr>
+					<td>End Trip - Location</td>
+					<td>{{information_dict.to}}</td>
+				</tr>
+				<tr>
+					<td>Rating</td>
+					<td>{{information_dict.rating}}</td>
+				</tr>
+				<tr>
+					<td>Review</td>
+					<td>{{information_dict.review}}</td>
+				</tr>
+			</table>
+			<h4>
+				<center><message>Thanks for reviewing!</center>
+				<center> Come back again to review more vehicles.</center>
+				<center>Contribute to make this city more safer for travelling!</message>
+			</h4>
+			</center>
+		</p>
+	</body>
+</html>

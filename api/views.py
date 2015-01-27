@@ -9,7 +9,10 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import Http404
+from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from django.template import Template, Context
 
 import json
 
@@ -44,7 +47,6 @@ def addInformation(request):
 				vehicle_id_in_db = None
 
 			# If vehicle is already present in DB, add only trip information and review to the DB.
-	
 			if vehicle_id_in_db:
 				trip_info = tripInfo(date = request.POST['date'],
 								time = request.POST['time'],
@@ -205,3 +207,44 @@ def getRating(request):
 		response_message['message'] = 'Aborted. Not a valid POST request.' 
 		return HttpResponse(json.dumps(response_message))
 
+
+
+# 4. API to show the trip information using the trip_id provided by the user. 
+@csrf_exempt
+def showInformation(request):
+
+	if request.method == 'GET':
+		# Get the linkid as GET request
+		linkid = request.GET['linkid']
+		
+		try:
+			# Load tripInfo and review information from the linkid (==trip_id) given
+			trip_info = tripInfo.objects.get(id = linkid)
+			review_info = reviews.objects.get(trip = linkid)
+		
+			# Load all the relevant information into a dictionary. 
+			information_dict = {}
+			information_dict["rating"] = review_info.rating
+			information_dict["review"] = review_info.review
+			information_dict["date"] = trip_info.date
+			information_dict["time"] = trip_info.time
+			information_dict["driverName"] = trip_info.driverName
+			
+			# Load Vehicle Information from the vehicle_id retrieved from tripInfo table
+			vehicle_info = vehicleInfo.objects.get(id = trip_info.vehicle_id)
+			information_dict["vehicleNumber"] = vehicle_info.vehicleNumber
+			information_dict["transportMode"] = vehicle_info.transportMode
+			information_dict["from"] = trip_info.location_from
+			information_dict["to"] = trip_info.location_to
+			
+			# Load all the variables
+			c = Context({'information_dict': information_dict})
+
+			# Render the template using the context variables and send page as HTTP response
+			return render_to_response('templates/irode/showInfo.html', c)
+		
+		except:
+			raise Http404
+	
+	else:
+		raise Http404

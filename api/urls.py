@@ -16,4 +16,5 @@ urlpatterns = patterns('',
 	url(r'^addinfo/$', views.addInformation, name='add information'),
 	url(r'^getinfo/$', views.getInformation, name='get information'),
 	url(r'^getrating/$', views.getRating, name='get rating'),
+	url(r'^showinfo/$', views.showInformation, name='show trip information'),
 )
