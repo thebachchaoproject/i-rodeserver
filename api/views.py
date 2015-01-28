@@ -240,7 +240,7 @@ def showInformation(request):
 			c = Context({'information_dict': information_dict})
 
 			# Render the template using the context variables and send page as HTTP response
-			return render_to_response('irode/showInfo.html', c)
+			return render_to_response('templates/irode/showInfo.html', c)
 		
 		except:
 			raise Http404
