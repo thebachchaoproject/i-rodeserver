@@ -1,11 +1,12 @@
 
-##############################################
-#                                            #
-#           Developer: Shreesha S            #
-#     Contact: shreesha.suresh@gmail.com     #
-#               Version 1.0                  #
-#                                            #
-##############################################
+#############################################################
+#                                                           #
+#                   Developer: Shreesha S                   #
+#          Contact: theteam@thebachchaoproject.org          #
+#                        Version 1.0                        #
+#          Copyright (c) 2015 The Bachchao Project          #
+#                                                           #
+#############################################################
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -20,6 +21,7 @@ from api.models import reviews
 from api.models import tripInfo
 from api.models import vehicleInfo
 
+from Utilities import toUpper
 
 # 1. API to add infromation to the database when the user gives a feedback.
 @csrf_exempt
@@ -29,8 +31,7 @@ def addInformation(request):
 		try:
 			vehicle_number = request.POST['vehiclenumber']
 			# Replace vehicle number to upper case and remove spaces for uniformity in database
-			vehicle_number = vehicle_number.upper()
-			vehicle_number = vehicle_number.replace(" ", "")
+			vehicle_number = toUpper.formatCase(vehicle_number)
 		
 			# Check if vehicle number is missing. If yes, print error message.
 			if vehicle_number == "":
@@ -112,8 +113,7 @@ def getInformation(request):
 
 	if request.method == 'POST':
 		vehicle_number = request.POST['vehiclenumber']
-		vehicle_number = vehicle_number.upper()
-		vehicle_number = vehicle_number.replace(" ", "")
+		vehicle_number = toUpper.formatCase(vehicle_number)
 		
 		# Check if vehicle number is missing. If yes, print error message.
 		if vehicle_number == "":
@@ -152,7 +152,7 @@ def getInformation(request):
 		
 		except:
 			dictionary = {}
-			dictionary['Status'] = "Rating / Review not available."
+			dictionary['Status'] = "Rating-Review not available."
 			return HttpResponse(json.dumps(dictionary))
 
 	else:
@@ -168,8 +168,7 @@ def getRating(request):
 
 	if request.method == 'POST':
 		vehicle_number = request.POST['vehiclenumber']
-		vehicle_number = vehicle_number.upper()
-		vehicle_number = vehicle_number.replace(" ", "")
+		vehicle_number = toUpper.formatCase(vehicle_number)
 		
 		# Check if vehicle number is missing. If yes, print error message.
 		if vehicle_number == "":
@@ -199,7 +198,7 @@ def getRating(request):
 		
 		except:
 			dictionary = {}
-			dictionary['Status'] = "Rating / Review not available."
+			dictionary['Status'] = "Rating-Review not available."
 			return HttpResponse(json.dumps(dictionary))
 
 	else:
@@ -241,7 +240,7 @@ def showInformation(request):
 			c = Context({'information_dict': information_dict})
 
 			# Render the template using the context variables and send page as HTTP response
-			return render_to_response('templates/irode/showInfo.html', c)
+			return render_to_response('irode/showInfo.html', c)
 		
 		except:
 			raise Http404

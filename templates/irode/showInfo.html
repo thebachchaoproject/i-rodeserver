@@ -1,42 +1,10 @@
-<!DOCTYPE htmlL>
-
-<hmtl>
+<!DOCTYPE html>
+{% load static %}
+<html>
 	<head>
 		<meta charset="utf-8">
 		<title>I-Rode | Trip Information</title>
-		<style>
-			table {
-    			width:80%;
-			}
-			table, th, td {
-    			border: 1px solid black;
-    			border-collapse: collapse;
-			}
-			th{
-    			padding: 10px;
-    			text-align: center;
-			} 
-			td {
-    			padding: 5px;
-    			text-align: center;
-			}
-			table#t01 tr:nth-child(even) {
-			    background-color: #eee;
-			}
-			table#t01 tr:nth-child(odd) {
-   				background-color:#fff;
-			}
-			table#t01 th	{
-    			background-color: gray;
-   				color: white;
-			}
-			#datetime{
-				padding-left: 135px;
-			}
-			#heading{
-				padding-left: 135px;
-			} 
-		</style>
+		<link rel="stylesheet" type="text/css" href= "{% static "css/showInfoStyle.css" %}" />
 	</head>
 
 	<body>
@@ -49,7 +17,7 @@
 				<h4>Date: {{information_dict.date|date:"D d M Y"}}</h4>
 				<h4>Time: {{information_dict.time|time:"H:i"}}</h4>
 			</div>
-			<center><table id="t01"
+			<center><table id="t01">
 				<tr>
 					<th>Fields</td>
 					<th>Information</th>

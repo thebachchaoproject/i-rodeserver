@@ -1,11 +1,12 @@
 
-##############################################
-#                                            #
-#           Developer: Shreesha S            #
-#     Contact: shreesha.suresh@gmail.com     #
-#               Version 1.0                  #
-#                                            #
-##############################################
+#############################################################
+#                                                           #
+#                   Developer: Shreesha S                   #
+#          Contact: theteam@thebachchaoproject.org          #
+#                        Version 1.0                        #
+#          Copyright (c) 2015 The Bachchao Project          #
+#                                                           #
+#############################################################
 
 """
 Django settings for irode project.
@@ -95,4 +96,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
+STATIC_PATH = [os.path.join(BASE_DIR,'static')]
+
 STATIC_URL = '/static/'
+
+STATICFILES_FINDERS = (
+	'django.contrib.staticfiles.finders.FileSystemFinder',
+	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+STATICFILES_DIRS = STATIC_PATH
+

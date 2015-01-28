@@ -1,0 +1,39 @@
+table {
+	width:80%;
+}
+
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th{
+	padding: 10px;
+	text-align: center;
+} 
+
+td {
+	padding: 5px;
+	text-align: center;
+}
+
+table#t01 tr:nth-child(even) {
+	background-color: #eee;
+}
+
+table#t01 tr:nth-child(odd) {
+	background-color:#fff;
+}
+
+table#t01 th	{
+	background-color: gray;
+	color: white;
+}
+
+#datetime{
+	padding-left: 135px;
+}
+
+#heading{
+	padding-left: 135px;
+} 

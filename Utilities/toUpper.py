@@ -1,4 +1,3 @@
-
 #############################################################
 #                                                           #
 #                   Developer: Shreesha S                   #
@@ -8,6 +7,11 @@
 #                                                           #
 #############################################################
 
-from django.test import TestCase
+# This is a function to normalize the string by converting all
 
-# Create your tests here.
+def formatCase(vehicleNumber):
+	# Convert all alphabets to upper case
+	vehicleNumber = vehicleNumber.upper()
+	# Concatenate the strings after clipping spaces
+	vehicleNumber = vehicleNumber.replace(" ", "")
+	return vehicleNumber
