@@ -16,6 +16,7 @@ class vehicleInfo(models.Model):
 	id = models.AutoField(primary_key=True)
 	vehicleNumber = models.CharField("vehicle_number", max_length = 20, blank=False)
 	transportMode = models.CharField("mode_of_transport", max_length = 20, blank=False)
+	avg_rating = models.DecimalField("average_rating", max_digits = 20, decimal_places = 4, blank=True)
 	
 	def __str__(self):
 		return self.vehicleNumber

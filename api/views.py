@@ -39,9 +39,9 @@ def addInformation(request):
 				response_message['message'] = 'Aborted. Critical information missing.'
 				return HttpResponse(json.dumps(response_message))
 
-			# Check the database to find any matching entries. If yes, get the id, else assign a None value.
+				# Check the database to find any matching entries. If yes, get the id, else assign a None value.
 			try:	
-				vehicle_present_in_db = vehicleInfo.objects.get(vehicleNumber=vehicle_number)			
+				vehicle_present_in_db = vehicleInfo.objects.get(vehicleNumber=vehicle_number)		
 				vehicle_id_in_db = vehicle_present_in_db.id
 	
 			except:
@@ -57,13 +57,28 @@ def addInformation(request):
 								photoLink = request.POST['photolink'],
 								vehicle = vehicleInfo.objects.get(id = vehicle_id_in_db))
 				trip_info.save()
-			
+
 				review_info = reviews( review = request.POST['review'],
 								rating = request.POST['rating'],
 								sourceInfo = vehicleInfo.objects.get(id = vehicle_id_in_db),
 								trip = tripInfo.objects.get(id = trip_info.id))
 				review_info.save()
+
+				""" 1. Calculate the previous total rating (== prev_total_rating)
+					2. Add the current given rating 
+					3. Calculate the average by dividing the total by no. of ratings 
+					4. Add to the database
+				"""
+				reviews_vehicle = reviews.objects.filter(sourceInfo = vehicle_id_in_db)
+				no_of_ratings = len(reviews_vehicle)
+				vehicle_row_info = vehicleInfo.objects.get(id = vehicle_id_in_db)
+				prev_total_rating = vehicle_row_info.avg_rating * (no_of_ratings - 1)
+				new_rating = (prev_total_rating + int(review_info.rating)) / no_of_ratings
 			
+				vehicle_info = vehicleInfo.objects.get(id = vehicle_id_in_db)
+				vehicle_info.avg_rating = new_rating
+				vehicle_info.save()
+		
 				response_message = {}
 				response_message['message'] = 'Success'
 				return HttpResponse(json.dumps(response_message))
@@ -74,7 +89,7 @@ def addInformation(request):
 								transportMode = request.POST['transportmode'],)
 
 				vehicle_info.save()
-			
+		
 				trip_info = tripInfo(date = request.POST['date'],
 								time = request.POST['time'],
 								location_from = request.POST['from'],
@@ -82,14 +97,19 @@ def addInformation(request):
 								driverName = request.POST['drivername'],
 								photoLink = request.POST['photolink'],
 								vehicle = vehicleInfo.objects.get(id = vehicle_info.id))
-			
+		
 				trip_info.save()
-			
+		
 				review_info = reviews(rating = request.POST['rating'],
 								review = request.POST['review'],
 								sourceInfo = vehicleInfo.objects.get(id = vehicle_info.id),
 								trip = tripInfo.objects.get(id = trip_info.id))
 				review_info.save()
+
+				# Add the current given rating as the average rating to api_vehicleInfo table
+				vehicle_info = vehicleInfo.objects.get(id = vehicle_info.id)
+				vehicle_info.avg_rating = review_info.rating
+				vehicle_info.save()
 
 				response_message = {}
 				response_message['message'] = 'Success'
@@ -128,24 +148,22 @@ def getInformation(request):
 			review_data = reviews.objects.filter(sourceInfo = vehicle_id_in_db)
 
 			dictionary = {}
-			count = 0
-			total_rating = 0
 			dict_list = []
+			count = 0
 			
-			# Loop over all ratings to calculate the total and hence find the average.
-			# And also loop over all non-void reviews to add to a dictionary.
+			# Loop over all non-void reviews to add to a dictionary.
 			for i in review_data:
 				count += 1
-				total_rating = total_rating + i.rating
 				if i.review == "":
 					continue
 				dictionary[count] = i.review
 			
-			# Calculate the average rating and append all reviews to a list.
-			average_rating = total_rating / count
-			avg_rating = {}
-			avg_rating["Average_Rating"] = average_rating
-			dict_list.append(avg_rating)
+			# Extract the average rating and append average rating, all reviews to a list.
+			average_rating = vehicle_present_in_db.avg_rating
+			avg_rating_dict = {}
+			# Convert avg_rating [type == Decimal("number")] into string and add to dictionary.
+			avg_rating_dict["Average_Rating"] = str(average_rating)
+			dict_list.append(avg_rating_dict)
 			dict_list.append(dictionary)
 		
 			return HttpResponse(json.dumps(dict_list))
@@ -177,24 +195,15 @@ def getRating(request):
 			return HttpResponse(json.dumps(response_message))
 
 		try:
-			# Filter the ratings based on the vehicle ID of the input.
+			# Extract the average rating from api_vehicleInfo table based on the vehicle number.
 			vehicle_present_in_db = vehicleInfo.objects.get(vehicleNumber=vehicle_number)			
-			vehicle_id_in_db = vehicle_present_in_db.id
-			rating_data = reviews.objects.filter(sourceInfo = vehicle_id_in_db)
-
-			count = 0
-			total_rating = 0
-
-			# Loop over all ratings to calculate the total and hence find the average.
-			for i in rating_data:
-				count += 1
-				total_rating = total_rating + i.rating
 				
-			average_rating = total_rating / count
-			avg_rating = {}
-			avg_rating["Average_Rating"] = average_rating
+			average_rating = vehicle_present_in_db.avg_rating
+			avg_rating_dict = {}
+			# Convert avg_rating [type == Decimal("number")] into string and load to JSON format.
+			avg_rating_dict["Average_Rating"] = str(average_rating)
 		
-			return HttpResponse(json.dumps(avg_rating))
+			return HttpResponse(json.dumps(avg_rating_dict))
 		
 		except:
 			dictionary = {}
