@@ -198,12 +198,10 @@ def getRating(request):
 			# Extract the average rating from api_vehicleInfo table based on the vehicle number.
 			vehicle_present_in_db = vehicleInfo.objects.get(vehicleNumber=vehicle_number)			
 				
-			average_rating = vehicle_present_in_db.avg_rating
-			avg_rating_dict = {}
 			# Convert avg_rating [type == Decimal("number")] into string and load to JSON format.
-			avg_rating_dict["Average_Rating"] = str(average_rating)
-		
-			return HttpResponse(json.dumps(avg_rating_dict))
+			average_rating = str(vehicle_present_in_db.avg_rating)
+
+			return HttpResponse(json.dumps(average_rating))
 		
 		except:
 			dictionary = {}
