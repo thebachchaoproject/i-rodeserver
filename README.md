@@ -166,5 +166,5 @@ vehiclenumber (string)
 curl -X post -d "vehiclenumber=ka32f1234" <yoururl>/api/getrating/ | more
 ```
 
-#### showinformation
-Shows an HTML info page.
+#### showinfo
+Returns an HTML info page.
