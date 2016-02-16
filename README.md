@@ -78,7 +78,7 @@ Add a user and an appropriate grant:
 $ CREATE USER irode PASSWORD 'magicpants';
 $ GRANT ALL ON DATABASE irode TO irode;
 ```
-exit the psql command line using `\q` and then `exit` to stop being the postgres user.
+Exit the psql command line using `\q` and then `exit` to stop being the postgres user.
 
 #### Configure i-rode Settings
 
@@ -108,7 +108,7 @@ Start the i-rode server:
 ```
 $ python3 manage.py runserver
 ```
-it should return something like:
+It should return something like:
 ```
      System check identified no issues (0 silenced).
      February 11, 2016 - 01:12:36
@@ -116,14 +116,18 @@ it should return something like:
      Starting development server at http://127.0.0.1:8000/
      Quit the server with CONTROL-C.
 ```
+Now you should be able to access the API at http://127.0.0.1:8000/api/getinfo/
 Or start it on an alternative ip, domain & port combo:
 ```
 $ python3 manage.py runserver xxx.xxx.xxx.xxx:80
 $ python3 manage.py runserver  xxx.org:8080
 ```
-Now you should be able to access the API at http://127.0.0.1:8000/api/getinfo/
 
-If you see a message you have won.
+If you see a Django message like:
+```
+{"message": "Aborted. Not a valid POST request."}
+```
+You have won :)
 
 ## Accessing the i-rode API
 
