@@ -117,6 +117,7 @@ It should return something like:
      Quit the server with CONTROL-C.
 ```
 Now you should be able to access the API at http://127.0.0.1:8000/api/getinfo/
+
 Or start it on an alternative ip, domain & port combo:
 ```
 $ python3 manage.py runserver xxx.xxx.xxx.xxx:80
