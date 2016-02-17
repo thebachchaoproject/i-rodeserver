@@ -1,7 +1,7 @@
 # i-rodeserver
 ### A Travel safety API based app for a friend
 
-These instruction were written to install the i-rode server on Ubuntu 14 Trusty Tahr.
+These instruction were written to install the i-rodeserver on Ubuntu 14 Trusty Tahr.
 
 ## Install Requirements
 #### Python 3.4
@@ -44,12 +44,12 @@ Install Postgres and postgres server with apt:
 ```
 $ apt-get install postgresql postgresql-server-dev-9.3;
 ```
-Now you should be ready to install i-rode!
+Now you should be ready to install i-rodeserver!
 
-## Install the i-rode server
+## Install the i-rodeserver
 Get the code and configure dependancies.
 
-#### Get the i-rode Code
+#### Get the i-rodeserver Code
 Clone the i-rode server:
 ```
 $ git clone https://github.com/thebachchaoproject/i-rodeserver.git
@@ -68,7 +68,7 @@ Become the postgres user:
 ```
 $ su - postgres
 ```
-Create our i-rode db and then change your connection to that:
+Create our i-rodeserver db and then change your connection to that:
 ```
 $ CREATE DATABASE irode;
 $ \c irode;
@@ -80,7 +80,7 @@ $ GRANT ALL ON DATABASE irode TO irode;
 ```
 Exit the psql command line using `\q` and then `exit` to stop being the postgres user.
 
-#### Configure i-rode Settings
+#### Configure i-rodeserver Settings
 
 Edit the settings.py file to change the database connection information:
 ```
@@ -102,9 +102,9 @@ Once that's complete you should be able to run the database migrations to bootst
 ```
 $ python3 manage.py migrate
 ```
-#### Start the i-rode Server
+#### Start the i-rodeserver
 
-Start the i-rode server:
+Start the i-rodeserver:
 ```
 $ python3 manage.py runserver
 ```
@@ -130,7 +130,7 @@ If you see a Django message like:
 ```
 You have won :)
 
-## Accessing the i-rode API
+## Accessing the i-rodeserver API
 
 #### addinfo
 Saves information about the ride.  Takes these options:
